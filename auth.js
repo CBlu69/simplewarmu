@@ -23,32 +23,33 @@ function showToast(message, type = 'info') {
 
 async function checkAuth() {
     const { data: { session } } = await supabaseClient.auth.getSession();
-    
-    if (session?.user) {
-        const { data: profile } = await supabaseClient
-            .from('profiles')
-            .select('*')
-            .eq('id', session.user.id)
-            .single();
 
-        const userData = {
-            id: session.user.id,
-            email: session.user.email,
-            username: profile?.username || session.user.user_metadata?.username || 'کاربر',
-            role: profile?.role || 'user',
-            avatar: profile?.avatar || getAvatar(profile?.username || 'کاربر')
-        };
+    const { data: profile } = await supabaseClient
+        .from('profiles')
+        .select('*')
+        .eq('id', session.user.id);
 
-        localStorage.setItem('chat_userId', userData.id);
-        localStorage.setItem('chat_username', userData.username);
-        localStorage.setItem('chat_userRole', userData.role);
-        localStorage.setItem('chat_avatar', userData.avatar);
+    // اولین نتیجه رو بگیر
+    const userProfile = profile && profile.length > 0 ? profile[0] : null;
 
-        return userData;
-    }
-    
-    return null;
+    const userData = {
+        id: session.user.id,
+        email: session.user.email,
+        username: profile?.username || session.user.user_metadata?.username || 'کاربر',
+        role: profile?.role || 'user',
+        avatar: profile?.avatar || getAvatar(profile?.username || 'کاربر')
+    };
+
+    localStorage.setItem('chat_userId', userData.id);
+    localStorage.setItem('chat_username', userData.username);
+    localStorage.setItem('chat_userRole', userData.role);
+    localStorage.setItem('chat_avatar', userData.avatar);
+
+    return userData;
 }
+
+return null;
+
 
 async function signupUser(username, email, password) {
     if (!username || !email || !password) {
