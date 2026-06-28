@@ -22,7 +22,7 @@ function showToast(message, type = 'info') {
 
 async function checkAuth() {
     const { data: { session } } = await supabaseClient.auth.getSession();
-    
+
     if (session?.user) {
         const { data: profiles } = await supabaseClient
             .from('profiles')
@@ -46,7 +46,7 @@ async function checkAuth() {
 
         return userData;
     }
-    
+
     return null;
 }
 
@@ -71,12 +71,13 @@ async function signupUser(username, email, password) {
     }
 
     if (authData?.user) {
-        await supabaseClient.from('profiles').insert({
+        const { data, error } = await supabaseClient.from('profiles').insert({
             id: authData.user.id,
             username: username,
             role: 'user',
             avatar: getAvatar(username)
         });
+        console.log('📝 پروفایل ساخته شد:', data, 'ارور:', error);
     }
 
     showToast('✅ ثبت‌نام موفق! حالا وارد شو', 'success');
