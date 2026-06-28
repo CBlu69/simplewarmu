@@ -584,6 +584,19 @@
 
                 // ===== چک لاگین =====
                 const user = await checkAuth();
+                // گرفتن مستقیم role از دیتابیس
+                const { data: profile } = await supabaseClient
+                    .from('profiles')
+                    .select('role')
+                    .eq('id', user.id)
+                    .single();
+
+                if (profile) {
+                    user.role = profile.role;
+                    localStorage.setItem('chat_userRole', profile.role);
+                }
+
+                console.log('✅ user.role:', user.role);
                 if (!user) {
                     window.location.href = 'index.html';
                     return;
@@ -713,16 +726,12 @@
                     if (renderedIds.has(msg.id)) return;
 
                     const isOwn = msg.user_id === userId;
-                    const isAdmin = user.role === 'admin';
+                    const isAdmin = localStorage.getItem('chat_userRole') === 'admin';
                     const canDelete = isOwn || isAdmin;
 
                     const div = document.createElement('div');
                     div.className = `message ${isOwn ? 'own' : ''}`;
                     div.id = `msg-${msg.id}`;
-
-                    const isImage = msg.message && msg.message.startsWith('[[IMAGE]]:');
-                    const imageUrl = isImage ? msg.message.replace('[[IMAGE]]:', '') : '';
-                    const messageText = isImage ? '📷 عکس' : escapeHtml(msg.message);
 
                     div.innerHTML = `
         <div class="msg-avatar">${msg.avatar || '👤'}</div>
@@ -732,9 +741,7 @@
                 ${msg.edited ? '<span class="edited-badge">(ویرایش)</span>' : ''}
                 <span>${new Date(msg.created_at).toLocaleTimeString('fa-IR', { hour: '2-digit', minute: '2-digit' })}</span>
             </div>
-            <div class="msg-bubble" id="bubble-${msg.id}">
-                ${isImage ? `<img src="${imageUrl}" style="max-width:200px;max-height:200px;border-radius:10px;cursor:pointer;" onclick="window.open('${imageUrl}')" />` : messageText}
-            </div>
+            <div class="msg-bubble" id="bubble-${msg.id}">${escapeHtml(msg.message)}</div>
             ${canDelete ? `
             <div class="msg-actions">
                 ${isOwn ? `<button class="msg-action-btn edit" data-id="${msg.id}">✏️</button>` : ''}
@@ -752,6 +759,7 @@
                         div.querySelector('.delete')?.addEventListener('click', () => deleteMessage(msg));
                     }
                 }
+
 
                 function editMessage(msg) {
                     const bubble = document.getElementById(`bubble-${msg.id}`);
@@ -771,14 +779,18 @@
                 }
 
                 async function deleteMessage(msg) {
-                    // ادمین می‌تونه پیام همه رو حذف کنه
-                    if (msg.user_id !== userId && user.role !== 'admin') {
-                        showToast('❌ فقط ادمین می‌تونه پیام بقیه رو حذف کنه', 'error');
+                    const isAdmin = localStorage.getItem('chat_userRole') === 'admin';
+                    if (msg.user_id !== userId && !isAdmin) {
+                        alert('❌ فقط ادمین می‌تونه پیام بقیه رو حذف کنه');
                         return;
                     }
-                    if (confirm('این پیام حذف بشه؟')) {
-                        await supabaseClient.from('messages').delete().eq('id', msg.id);
-                    }
+
+                    showConfirm('این پیام حذف بشه؟', async () => {
+                        const { error } = await supabaseClient.from('messages').delete().eq('id', msg.id);
+                        if (error) {
+                            console.error('خطا در حذف:', error);
+                        }
+                    });
                 }
 
                 async function sendMessage() {
@@ -843,6 +855,39 @@
 
                 console.log('❄️ چت با Supabase آماده! پیام‌ها بلادرنگ و اشتراکی 🏎️');
             })();
+        </script>
+        <!-- مودال تایید حذف -->
+        <div class="modal-overlay" id="confirmModal" style="z-index:2000;">
+            <div class="glass auth-modal-card" style="text-align:center;padding:24px;">
+                <p style="color:var(--ice2);margin-bottom:16px;" id="confirmText">این پیام حذف بشه؟</p>
+                <div style="display:flex;gap:10px;justify-content:center;">
+                    <button class="btn-ice" id="confirmYes"
+                        style="background:rgba(239,68,68,0.3);border-color:#ef4444;color:#fca5a5;">🗑 حذف</button>
+                    <button class="btn-ice" id="confirmNo">انصراف</button>
+                </div>
+            </div>
+        </div>
+
+        <script>
+            // مودال تایید حذف
+            let confirmCallback = null;
+            const confirmModal = document.getElementById('confirmModal');
+
+            function showConfirm(text, callback) {
+                document.getElementById('confirmText').textContent = text;
+                confirmModal.classList.add('open');
+                confirmCallback = callback;
+            }
+
+            document.getElementById('confirmYes').addEventListener('click', () => {
+                confirmModal.classList.remove('open');
+                if (confirmCallback) confirmCallback();
+            });
+
+            document.getElementById('confirmNo').addEventListener('click', () => {
+                confirmModal.classList.remove('open');
+                confirmCallback = null;
+            });
         </script>
 </body>
 
