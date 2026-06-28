@@ -2,10 +2,9 @@
 const SUPABASE_URL = 'https://kmgtrqwcuuqdgrgmkvkf.supabase.co';
 const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImttZ3RycXdjdXVxZGdyZ21rdmtmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODI2NTY2MjIsImV4cCI6MjA5ODIzMjYyMn0.i22KZmspL89WZreO05p0PU4lP3UnYLfGPSZ-tOWo_b4';
 
-// اسم متفاوت بده که تداخل نکنه
 const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-// ===== توابع مشترک =====
+// ===== توابع =====
 function getAvatar(name) {
     const av = ['🚗', '🏎️', '🚙', '🔥', '💨', '⚡', '🔧', '🎵'];
     let h = 0;
@@ -23,33 +22,33 @@ function showToast(message, type = 'info') {
 
 async function checkAuth() {
     const { data: { session } } = await supabaseClient.auth.getSession();
+    
+    if (session?.user) {
+        const { data: profiles } = await supabaseClient
+            .from('profiles')
+            .select('*')
+            .eq('id', session.user.id);
 
-    const { data: profile } = await supabaseClient
-        .from('profiles')
-        .select('*')
-        .eq('id', session.user.id);
+        const profile = profiles && profiles.length > 0 ? profiles[0] : null;
 
-    // اولین نتیجه رو بگیر
-    const userProfile = profile && profile.length > 0 ? profile[0] : null;
+        const userData = {
+            id: session.user.id,
+            email: session.user.email,
+            username: profile?.username || session.user.user_metadata?.username || 'کاربر',
+            role: profile?.role || 'user',
+            avatar: profile?.avatar || getAvatar(profile?.username || 'کاربر')
+        };
 
-    const userData = {
-        id: session.user.id,
-        email: session.user.email,
-        username: profile?.username || session.user.user_metadata?.username || 'کاربر',
-        role: profile?.role || 'user',
-        avatar: profile?.avatar || getAvatar(profile?.username || 'کاربر')
-    };
+        localStorage.setItem('chat_userId', userData.id);
+        localStorage.setItem('chat_username', userData.username);
+        localStorage.setItem('chat_userRole', userData.role);
+        localStorage.setItem('chat_avatar', userData.avatar);
 
-    localStorage.setItem('chat_userId', userData.id);
-    localStorage.setItem('chat_username', userData.username);
-    localStorage.setItem('chat_userRole', userData.role);
-    localStorage.setItem('chat_avatar', userData.avatar);
-
-    return userData;
+        return userData;
+    }
+    
+    return null;
 }
-
-return null;
-
 
 async function signupUser(username, email, password) {
     if (!username || !email || !password) {
@@ -71,12 +70,14 @@ async function signupUser(username, email, password) {
         return null;
     }
 
-    await supabaseClient.from('profiles').insert({
-        id: authData.user.id,
-        username,
-        role: 'user',
-        avatar: getAvatar(username)
-    });
+    if (authData?.user) {
+        await supabaseClient.from('profiles').insert({
+            id: authData.user.id,
+            username: username,
+            role: 'user',
+            avatar: getAvatar(username)
+        });
+    }
 
     showToast('✅ ثبت‌نام موفق! حالا وارد شو', 'success');
     return authData;
@@ -96,7 +97,9 @@ async function loginUser(email, password) {
     }
 
     const userData = await checkAuth();
-    showToast('✅ خوش آمدی ' + userData.username + '!', 'success');
+    if (userData) {
+        showToast('✅ خوش آمدی ' + userData.username + '!', 'success');
+    }
     return userData;
 }
 
