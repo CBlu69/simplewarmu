@@ -711,15 +711,44 @@
 
                 function appendMessage(msg) {
                     if (renderedIds.has(msg.id)) return;
-                    const isOwn = msg.username === username;
+
+                    const isOwn = msg.user_id === userId;
+                    const isAdmin = user.role === 'admin';
+                    const canDelete = isOwn || isAdmin;
+
                     const div = document.createElement('div');
                     div.className = `message ${isOwn ? 'own' : ''}`;
                     div.id = `msg-${msg.id}`;
-                    div.innerHTML = `<div class="msg-avatar">${msg.avatar || '👤'}</div><div class="msg-content"><div class="msg-info"><span>${msg.username}</span>${msg.edited ? '<span class="edited-badge">(ویرایش)</span>' : ''}<span>${new Date(msg.created_at).toLocaleTimeString('fa-IR', { hour: '2-digit', minute: '2-digit' })}</span></div><div class="msg-bubble" id="bubble-${msg.id}">${escapeHtml(msg.message)}</div>${isOwn ? `<div class="msg-actions"><button class="msg-action-btn edit" data-id="${msg.id}">✏️</button><button class="msg-action-btn delete" data-id="${msg.id}">🗑</button></div>` : ''}</div>`;
+
+                    const isImage = msg.message && msg.message.startsWith('[[IMAGE]]:');
+                    const imageUrl = isImage ? msg.message.replace('[[IMAGE]]:', '') : '';
+                    const messageText = isImage ? '📷 عکس' : escapeHtml(msg.message);
+
+                    div.innerHTML = `
+        <div class="msg-avatar">${msg.avatar || '👤'}</div>
+        <div class="msg-content">
+            <div class="msg-info">
+                <span>${msg.username}</span>
+                ${msg.edited ? '<span class="edited-badge">(ویرایش)</span>' : ''}
+                <span>${new Date(msg.created_at).toLocaleTimeString('fa-IR', { hour: '2-digit', minute: '2-digit' })}</span>
+            </div>
+            <div class="msg-bubble" id="bubble-${msg.id}">
+                ${isImage ? `<img src="${imageUrl}" style="max-width:200px;max-height:200px;border-radius:10px;cursor:pointer;" onclick="window.open('${imageUrl}')" />` : messageText}
+            </div>
+            ${canDelete ? `
+            <div class="msg-actions">
+                ${isOwn ? `<button class="msg-action-btn edit" data-id="${msg.id}">✏️</button>` : ''}
+                <button class="msg-action-btn delete" data-id="${msg.id}">🗑</button>
+            </div>` : ''}
+        </div>`;
+
                     chatMessages.appendChild(div);
                     renderedIds.add(msg.id);
+
                     if (isOwn) {
                         div.querySelector('.edit')?.addEventListener('click', () => editMessage(msg));
+                    }
+                    if (canDelete) {
                         div.querySelector('.delete')?.addEventListener('click', () => deleteMessage(msg));
                     }
                 }
@@ -742,8 +771,13 @@
                 }
 
                 async function deleteMessage(msg) {
+                    // ادمین می‌تونه پیام همه رو حذف کنه
+                    if (msg.user_id !== userId && user.role !== 'admin') {
+                        showToast('❌ فقط ادمین می‌تونه پیام بقیه رو حذف کنه', 'error');
+                        return;
+                    }
                     if (confirm('این پیام حذف بشه؟')) {
-                        await supabase.from('messages').delete().eq('id', msg.id);
+                        await supabaseClient.from('messages').delete().eq('id', msg.id);
                     }
                 }
 
