@@ -697,7 +697,8 @@
                 </div>
                 <button class="auth-btn" id="updateResetPassword">💾 تغییر رمز</button>
                 <p style="color:#86efac;text-align:center;margin-top:12px;display:none" id="resetSuccess">✅ رمز عوض شد!
-                    <a href="index.html" style="color:var(--ice3)">برو به سایت</a></p>
+                    <a href="index.html" style="color:var(--ice3)">برو به سایت</a>
+                </p>
                 <p style="color:#fca5a5;text-align:center;margin-top:12px;display:none" id="resetError"></p>
             </div>
         </div>
@@ -744,6 +745,32 @@
                         document.getElementById('resetSuccess').style.display = 'block';
                     }
                 });
+            }
+        })();
+    </script>
+    <script>
+        // ===== گرفتن لینک بازنشانی =====
+        (function () {
+            // اگه URL هش داره
+            if (window.location.hash) {
+                var hash = window.location.hash;
+                console.log('🔍 هش پیدا شد:', hash);
+
+                // اگه recovery توش هست
+                if (hash.indexOf('type=recovery') !== -1) {
+                    console.log('✅ لینک بازنشانی تشخیص داده شد!');
+
+                    // مودال رو باز کن
+                    setTimeout(function () {
+                        var modal = document.getElementById('resetPasswordModal');
+                        if (modal) {
+                            modal.style.display = 'flex';
+                            console.log('✅ مودال باز شد');
+                        } else {
+                            console.log('❌ مودال پیدا نشد');
+                        }
+                    }, 500);
+                }
             }
         })();
     </script>
