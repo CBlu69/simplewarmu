@@ -588,7 +588,8 @@
     <div class="chat-container">
         <aside class="chat-sidebar" id="sidebar">
             <div class="sidebar-header">
-                <h3>🏎️ چت ماشین‌بازها</h3><a href="index.html" class="back-btn">← برگشت</a>
+                <h3>🏎️ چت ماشین‌بازها</h3>
+                <button class="back-btn" id="closeSidebarBtn">← برگشت</button>
             </div>
             <div class="user-card-mini">
                 <div class="user-avatar-mini" id="sidebarAvatar">👤</div>
@@ -654,6 +655,14 @@
             const groupTitle = document.getElementById('groupTitle');
             const menuToggle = document.getElementById('menuToggle');
             const sidebar = document.getElementById('sidebar');
+
+            // دکمه برگشت = بستن sidebar
+            const closeSidebarBtn = document.getElementById('closeSidebarBtn');
+            if (closeSidebarBtn) {
+                closeSidebarBtn.addEventListener('click', function () {
+                    sidebar.classList.remove('open');
+                });
+            }
             const onlineCount = document.getElementById('onlineCount');
             const displayName = document.getElementById('displayName');
             const roleBadge = document.getElementById('roleBadge');
