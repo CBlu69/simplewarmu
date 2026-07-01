@@ -5,39 +5,61 @@
     <meta charset="UTF-8">
     <meta name="viewport"
         content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>چت ماشین‌بازها | Simple Warmup</title>
-    <meta name="description" content="چت آنلاین ماشین‌بازها - بحث و گفتگو درباره تیونینگ، ماشین و سرعت">
-    <meta name="theme-color" content="#041a2e">
-    <meta property="og:title" content="چت ماشین‌بازها | Simple Warmup">
-    <meta property="og:description" content="چت آنلاین ماشین‌بازها">
+    <title>چت | chat </title>
     <link rel="icon" type="image/png" href="favicon.png">
-    <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;600;700;900&display=swap"
+    <meta name="description" content="چت آنلاین ماشین‌بازها - بحث و گفتگو درباره تیونینگ، ماشین و سرعت">
+    <meta name="theme-color" content="#1a1a2e">
+    <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700;800&display=swap"
         rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
     <style>
+        :root {
+            --tg-bg: #0e1621;
+            --tg-bg-secondary: #17212b;
+            --tg-bg-tertiary: #242f3d;
+            --tg-bg-input: #17212b;
+            --tg-bg-message: #182533;
+            --tg-bg-message-own: #2b5278;
+            --tg-bg-hover: rgba(255, 255, 255, 0.04);
+            --tg-bg-active: rgba(255, 255, 255, 0.08);
+            --tg-text: #f5f5f5;
+            --tg-text-secondary: #aaaaaa;
+            --tg-text-muted: #6c7883;
+            --tg-accent: #5ba0d0;
+            --tg-accent-light: #6ab2e0;
+            --tg-link: #5ba0d0;
+            --tg-danger: #e05252;
+            --tg-success: #4caf7d;
+            --tg-warning: #d4a43a;
+            --tg-border: rgba(255, 255, 255, 0.06);
+            --tg-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+            --tg-radius-sm: 6px;
+            --tg-radius: 10px;
+            --tg-radius-lg: 14px;
+            --tg-radius-xl: 18px;
+            --tg-transition: 0.15s ease;
+            --safe-bottom: env(safe-area-inset-bottom, 0px);
+        }
+
         * {
             margin: 0;
             padding: 0;
-            box-sizing: border-box
+            box-sizing: border-box;
         }
 
-        :root {
-            --ice1: #e0f7ff;
-            --ice2: #b3ecff;
-            --ice3: #5dd5f8;
-            --safe-bottom: env(safe-area-inset-bottom, 0px);
-            --gold: #fbbf24;
-            --red: #ef4444;
-            --green: #22c55e
-        }
-
-        .chat-page-body {
-            background: #041a2e;
+        body {
+            font-family: 'Vazirmatn', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--tg-bg);
             height: 100vh;
             height: 100dvh;
             overflow: hidden;
             position: fixed;
-            inset: 0
+            inset: 0;
+            color: var(--tg-text);
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            user-select: none;
+            -webkit-user-select: none;
+            -webkit-tap-highlight-color: transparent;
         }
 
         .chat-container {
@@ -45,263 +67,336 @@
             width: 100%;
             height: 100%;
             position: relative;
-            z-index: 2
         }
 
+        /* === سایدبار (پنل چت‌ها) === */
         .chat-sidebar {
-            width: 260px;
-            background: linear-gradient(135deg, rgba(14, 165, 233, .12), rgba(93, 213, 248, .04));
-            border-left: 1px solid rgba(125, 211, 252, .15);
-            backdrop-filter: blur(30px);
+            width: 300px;
+            background: var(--tg-bg);
+            border-right: 1px solid var(--tg-border);
             display: flex;
             flex-direction: column;
-            padding: 20px;
             overflow-y: auto;
-            flex-shrink: 0
+            flex-shrink: 0;
+            transition: transform 0.25s ease;
         }
 
         .sidebar-header {
+            padding: 16px;
+            border-bottom: 1px solid var(--tg-border);
             display: flex;
-            justify-content: space-between;
             align-items: center;
-            margin-bottom: 20px;
-            padding-bottom: 16px;
-            border-bottom: 1px solid rgba(125, 211, 252, .1)
+            justify-content: space-between;
+            background: var(--tg-bg);
+            position: sticky;
+            top: 0;
+            z-index: 10;
         }
 
         .sidebar-header h3 {
-            color: var(--ice2);
-            font-size: 16px;
-            margin: 0
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--tg-text);
+            letter-spacing: -0.2px;
         }
 
         .back-btn {
-            color: var(--ice3);
+            display: none;
             font-size: 13px;
-            padding: 6px 12px;
-            border-radius: 8px;
-            background: rgba(14, 165, 233, .15);
-            border: 1px solid rgba(125, 211, 252, .2);
-            transition: .3s;
+            font-weight: 500;
+            padding: 7px 14px;
+            border-radius: var(--tg-radius);
+            background: var(--tg-bg-hover);
+            border: none;
+            color: var(--tg-text-secondary);
             cursor: pointer;
-            font-family: 'Vazirmatn', sans-serif
+            transition: all var(--tg-transition);
+            font-family: 'Vazirmatn', sans-serif;
         }
 
-        .back-btn:hover {
-            background: rgba(14, 165, 233, .3);
-            color: #fff
+        .back-btn:active {
+            background: var(--tg-bg-active);
         }
 
-        .user-card-mini {
+        /* پروفایل کاربر */
+        .user-profile {
+            padding: 12px 16px;
             display: flex;
             align-items: center;
-            gap: 10px;
-            padding: 12px;
-            background: rgba(14, 165, 233, .1);
-            border: 1px solid rgba(125, 211, 252, .15);
-            border-radius: 14px;
-            margin-bottom: 8px
+            gap: 12px;
+            border-bottom: 1px solid var(--tg-border);
+            background: var(--tg-bg);
         }
 
         .user-avatar-mini {
-            width: 40px;
-            height: 40px;
+            width: 44px;
+            height: 44px;
             border-radius: 50%;
-            background: rgba(14, 165, 233, .2);
+            background: linear-gradient(135deg, #5ba0d0, #ffffffbb);
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 20px;
-            flex-shrink: 0
+            font-size: 22px;
+            flex-shrink: 0;
+            color: #fff;
         }
 
         .user-info-mini {
             flex: 1;
-            min-width: 0
+            min-width: 0;
         }
 
         .user-name-display {
-            color: var(--ice2);
-            font-size: 14px;
-            font-weight: 600
+            color: var(--tg-text);
+            font-size: 15px;
+            font-weight: 600;
+            line-height: 1.3;
         }
 
         .user-role-badge {
-            font-size: 10px;
-            padding: 2px 8px;
-            border-radius: 99px;
-            display: inline-block
+            font-size: 12px;
+            color: var(--tg-text-muted);
         }
 
         .user-role-badge.admin {
-            background: rgba(251, 191, 36, .2);
-            color: var(--gold);
-            border: 1px solid rgba(251, 191, 36, .3)
+            color: var(--tg-warning);
         }
 
-        .user-role-badge.user {
-            background: rgba(125, 211, 252, .1);
-            color: var(--ice3);
-            border: 1px solid rgba(125, 211, 252, .2)
+        .user-actions {
+            display: flex;
+            gap: 2px;
         }
 
-        .logout-btn-mini {
-            padding: 6px 10px;
-            border-radius: 8px;
-            border: 1px solid rgba(239, 68, 68, .3);
-            background: rgba(239, 68, 68, .1);
-            color: #fca5a5;
-            font-size: 11px;
+        .icon-btn {
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            border: none;
+            background: transparent;
+            color: var(--tg-text-secondary);
             cursor: pointer;
-            font-family: 'Vazirmatn', sans-serif;
-            transition: .3s;
-            white-space: nowrap
-        }
-
-        .logout-btn-mini:hover {
-            background: rgba(239, 68, 68, .25)
-        }
-
-        .sidebar-section {
-            margin-bottom: 20px
-        }
-
-        .sidebar-section h4 {
-            color: rgba(179, 236, 255, .4);
-            font-size: 11px;
-            letter-spacing: 1px;
-            margin-bottom: 10px
-        }
-
-        .group-item {
+            font-size: 18px;
             display: flex;
             align-items: center;
-            gap: 10px;
-            padding: 10px 12px;
-            border-radius: 12px;
+            justify-content: center;
+            transition: all var(--tg-transition);
+        }
+
+        .icon-btn:active {
+            background: var(--tg-bg-active);
+            transform: scale(0.95);
+        }
+
+        .icon-btn.admin-btn {
+            display: none;
+        }
+
+        .icon-btn.admin-btn:active {
+            color: var(--tg-warning);
+        }
+
+        /* جستجو */
+        .search-box {
+            padding: 8px 12px;
+            border-bottom: 1px solid var(--tg-border);
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 8px 14px;
+            border-radius: var(--tg-radius);
+            border: none;
+            background: var(--tg-bg-secondary);
+            color: var(--tg-text);
+            font-size: 14px;
+            font-family: 'Vazirmatn', sans-serif;
+            outline: none;
+            transition: all var(--tg-transition);
+        }
+
+        .search-input:focus {
+            background: var(--tg-bg-tertiary);
+        }
+
+        .search-input::placeholder {
+            color: var(--tg-text-muted);
+        }
+
+        /* لیست گروه‌ها */
+        .chats-list {
+            flex: 1;
+            overflow-y: auto;
+        }
+
+        .chat-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 14px;
             cursor: pointer;
-            transition: .2s;
-            margin-bottom: 4px
+            transition: background var(--tg-transition);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.02);
         }
 
-        .group-item:hover {
-            background: rgba(14, 165, 233, .1)
+        .chat-item:active {
+            background: var(--tg-bg-active);
         }
 
-        .group-item.active {
-            background: rgba(14, 165, 233, .2);
-            border: 1px solid rgba(125, 211, 252, .3)
+        .chat-item.active {
+            background: rgba(91, 160, 208, 0.25);
         }
 
-        .group-icon {
-            font-size: 20px
+        .chat-avatar {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: var(--tg-bg-tertiary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            flex-shrink: 0;
         }
 
-        .group-name {
-            color: var(--ice2);
+        .chat-info {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .chat-name {
+            font-size: 15px;
+            font-weight: 500;
+            color: var(--tg-text);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .chat-preview {
             font-size: 13px;
-            display: block
+            color: var(--tg-text-muted);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            margin-top: 2px;
         }
 
-        .group-count {
-            color: rgba(179, 236, 255, .3);
-            font-size: 10px
+        .chat-meta {
+            text-align: left;
+            flex-shrink: 0;
         }
 
+        .chat-time {
+            font-size: 11px;
+            color: var(--tg-text-muted);
+            display: block;
+        }
+
+        .online-badge {
+            font-size: 11px;
+            color: var(--tg-accent);
+            display: block;
+            margin-top: 2px;
+        }
+
+        /* === بخش اصلی چت === */
         .chat-main {
             flex: 1;
             display: flex;
             flex-direction: column;
-            background: rgba(14, 165, 233, .04);
-            border-left: 1px solid rgba(125, 211, 252, .1);
-            border-right: 1px solid rgba(125, 211, 252, .1);
-            min-width: 0
+            background: var(--tg-bg);
+            min-width: 0;
+            position: relative;
+            background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.015'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
         }
 
         .chat-header {
             padding: 12px 16px;
             display: flex;
             align-items: center;
-            gap: 10px;
-            background: rgba(14, 165, 233, .08);
-            border-bottom: 1px solid rgba(125, 211, 252, .1);
+            gap: 12px;
+            background: var(--tg-bg-secondary);
+            border-bottom: 1px solid var(--tg-border);
             flex-shrink: 0;
-            justify-content: space-between
+            box-shadow: var(--tg-shadow);
+            position: relative;
+            z-index: 5;
+        }
+
+        .mobile-toggle {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--tg-text-secondary);
+            font-size: 22px;
+            cursor: pointer;
+            padding: 6px;
+            border-radius: var(--tg-radius-sm);
+            transition: background var(--tg-transition);
+        }
+
+        .mobile-toggle:active {
+            background: var(--tg-bg-active);
+        }
+
+        .chat-header-info {
+            flex: 1;
+            text-align: right;
         }
 
         .chat-header h2 {
             font-size: 16px;
-            color: var(--ice2);
-            margin: 0
+            font-weight: 600;
+            color: var(--tg-text);
+            line-height: 1.3;
         }
 
         .online-count {
-            font-size: 10px;
-            color: rgba(179, 236, 255, .4)
+            font-size: 12px;
+            color: var(--tg-text-muted);
+            font-weight: 400;
         }
 
         .online-dot {
-            width: 7px;
-            height: 7px;
+            width: 10px;
+            height: 10px;
             border-radius: 50%;
-            background: var(--green);
-            box-shadow: 0 0 10px rgba(34, 197, 94, .5);
-            animation: onlinePulse 2s ease-in-out infinite
-        }
-
-        @keyframes onlinePulse {
-
-            0%,
-            100% {
-                opacity: 1
-            }
-
-            50% {
-                opacity: .5
-            }
+            background: var(--tg-success);
+            border: 2px solid var(--tg-bg-secondary);
+            flex-shrink: 0;
         }
 
         /* تایپینگ */
         .typing-indicator {
-            padding: 8px 16px;
-            font-size: 11px;
-            color: rgba(93, 213, 248, .7);
-            animation: typingFade 1s ease-in-out infinite;
-            text-align: center;
-            min-height: 24px
-        }
-
-        @keyframes typingFade {
-
-            0%,
-            100% {
-                opacity: .4
-            }
-
-            50% {
-                opacity: 1
-            }
+            padding: 4px 16px;
+            font-size: 12px;
+            color: var(--tg-text-muted);
+            min-height: 20px;
+            font-style: italic;
+            background: rgba(0, 0, 0, 0.1);
         }
 
         .typing-dots {
             display: inline-flex;
-            gap: 3px
+            gap: 3px;
+            margin-right: 4px;
+            vertical-align: middle;
         }
 
         .typing-dots span {
-            width: 5px;
-            height: 5px;
+            width: 4px;
+            height: 4px;
             border-radius: 50%;
-            background: var(--ice3);
-            animation: typingDot 1.4s ease-in-out infinite
+            background: var(--tg-text-muted);
+            animation: typingDot 1.4s ease-in-out infinite;
         }
 
         .typing-dots span:nth-child(2) {
-            animation-delay: .2s
+            animation-delay: 0.2s;
         }
 
         .typing-dots span:nth-child(3) {
-            animation-delay: .4s
+            animation-delay: 0.4s;
         }
 
         @keyframes typingDot {
@@ -309,309 +404,394 @@
             0%,
             60%,
             100% {
+                opacity: 0.2;
                 transform: translateY(0);
-                opacity: .3
             }
 
             30% {
-                transform: translateY(-6px);
-                opacity: 1
+                opacity: 0.8;
+                transform: translateY(-3px);
             }
         }
 
+        /* پیام‌ها */
         .chat-messages {
             flex: 1;
             overflow-y: auto;
-            padding: 16px;
+            padding: 12px 14px;
             display: flex;
             flex-direction: column;
-            gap: 6px;
-            -webkit-overflow-scrolling: touch
+            gap: 1px;
+            -webkit-overflow-scrolling: touch;
+            scroll-behavior: smooth;
         }
 
+        .chat-messages::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        .chat-messages::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .chat-messages::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.06);
+            border-radius: 4px;
+        }
+
+        /* تاریخ جداکننده */
+        .date-separator {
+            text-align: center;
+            margin: 12px 0;
+        }
+
+        .date-separator span {
+            background: rgba(255, 255, 255, 0.08);
+            color: var(--tg-text-muted);
+            font-size: 12px;
+            padding: 4px 14px;
+            border-radius: var(--tg-radius);
+            font-weight: 500;
+        }
+
+        /* پیام */
         .message {
             display: flex;
-            gap: 6px;
-            max-width: 80%;
-            animation: msgIn .3s ease;
-            position: relative
+            gap: 8px;
+            max-width: 72%;
+            position: relative;
+            padding: 1px 0;
         }
 
         .message.own {
             align-self: flex-end;
-            flex-direction: row-reverse
-        }
-
-        @keyframes msgIn {
-            from {
-                opacity: 0;
-                transform: translateY(10px)
-            }
-
-            to {
-                opacity: 1;
-                transform: translateY(0)
-            }
+            flex-direction: row-reverse;
         }
 
         .msg-avatar {
-            width: 28px;
-            height: 28px;
+            width: 34px;
+            height: 34px;
             border-radius: 50%;
-            background: rgba(14, 165, 233, .2);
+            background: linear-gradient(135deg, #5ba0d0, #ffffff);
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 14px;
+            font-size: 16px;
             flex-shrink: 0;
-            cursor: pointer
+            cursor: pointer;
+            margin-top: 2px;
+            color: #fff;
+            opacity: 0;
+            transition: opacity var(--tg-transition);
         }
 
-        .msg-bubble {
-            padding: 8px 12px;
-            border-radius: 14px;
-            font-size: 13px;
-            line-height: 1.6;
-            word-break: break-word
+        .message:last-child .msg-avatar,
+        .message.first .msg-avatar {
+            opacity: 1;
         }
 
-        .msg-bubble a {
-            color: var(--ice3);
-            text-decoration: underline;
-            cursor: pointer
+        .msg-content {
+            flex: 1;
+            min-width: 0;
         }
 
-        .msg-bubble a:hover {
-            color: #fff
-        }
-
-        .message:not(.own) .msg-bubble {
-            background: rgba(14, 165, 233, .15);
-            border: 1px solid rgba(125, 211, 252, .2);
-            border-bottom-right-radius: 4px;
-            color: var(--ice2)
-        }
-
-        .message.own .msg-bubble {
-            background: rgba(93, 213, 248, .2);
-            border: 1px solid rgba(93, 213, 248, .3);
-            border-bottom-left-radius: 4px;
-            color: #fff
-        }
-
-        .msg-info {
+        .message.own .msg-content {
             display: flex;
-            gap: 4px;
-            font-size: 9px;
-            color: rgba(179, 236, 255, .3);
-            margin-bottom: 2px
+            flex-direction: column;
+            align-items: flex-end;
         }
 
-        .message.own .msg-info {
-            justify-content: flex-end
+        .msg-header {
+            display: flex;
+            gap: 6px;
+            align-items: center;
+            margin-bottom: 1px;
+            padding: 0 4px;
+        }
+
+        .message.own .msg-header {
+            flex-direction: row-reverse;
+        }
+
+        .msg-username {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--tg-accent);
+            cursor: pointer;
+        }
+
+        .msg-username:active {
+            opacity: 0.7;
+        }
+
+        .msg-time {
+            font-size: 11px;
+            color: var(--tg-text-muted);
+            font-weight: 400;
         }
 
         .edited-badge {
-            font-size: 8px;
-            color: rgba(179, 236, 255, .25)
+            font-size: 10px;
+            color: var(--tg-text-muted);
+        }
+
+        .msg-bubble {
+            padding: 7px 12px;
+            border-radius: var(--tg-radius);
+            font-size: 14px;
+            line-height: 1.55;
+            word-break: break-word;
+            position: relative;
+            display: inline-block;
+            max-width: 100%;
+        }
+
+        .message:not(.own) .msg-bubble {
+            background: var(--tg-bg-message);
+            color: var(--tg-text);
+            border-top-right-radius: 2px;
+        }
+
+        .message.own .msg-bubble {
+            background: var(--tg-bg-message-own);
+            color: #fff;
+            border-top-left-radius: 2px;
+        }
+
+        .msg-bubble a {
+            color: #8cc7f0;
+            text-decoration: none;
+        }
+
+        .msg-bubble a:active {
+            opacity: 0.7;
         }
 
         /* ریپلای */
-        .reply-preview {
-            background: rgba(14, 165, 233, .1);
-            border-right: 3px solid var(--ice3);
-            padding: 6px 10px;
-            border-radius: 8px;
-            margin-bottom: 4px;
-            font-size: 11px;
-            color: rgba(179, 236, 255, .5);
+        .msg-reply-to {
+            font-size: 12px;
+            color: var(--tg-accent);
+            margin-bottom: 3px;
             cursor: pointer;
-            max-width: 200px;
+            padding: 3px 8px;
+            border-right: 2px solid var(--tg-accent);
+            background: rgba(91, 160, 208, 0.08);
+            border-radius: 2px 6px 6px 2px;
+            display: inline-block;
+            max-width: 100%;
             overflow: hidden;
             text-overflow: ellipsis;
-            white-space: nowrap
+            white-space: nowrap;
         }
 
-        .reply-preview:hover {
-            background: rgba(14, 165, 233, .2)
-        }
-
-        .msg-reply-to {
-            font-size: 10px;
-            color: var(--ice3);
-            margin-bottom: 2px;
-            cursor: pointer
-        }
-
+        /* اکشن‌های پیام */
         .msg-actions {
-            display: none;
             position: absolute;
-            top: -8px;
+            top: -28px;
+            display: flex;
             gap: 2px;
-            z-index: 5
+            opacity: 0;
+            transition: all var(--tg-transition);
+            pointer-events: none;
+            z-index: 5;
         }
 
         .message.own .msg-actions {
-            left: 0
+            left: 0;
         }
 
         .message:not(.own) .msg-actions {
-            right: 0
+            right: 0;
         }
 
+        .message:active .msg-actions,
         .message:hover .msg-actions {
-            display: flex
+            opacity: 1;
+            pointer-events: all;
         }
 
         .msg-action-btn {
-            width: 22px;
-            height: 22px;
-            border-radius: 50%;
-            border: 1px solid rgba(125, 211, 252, .3);
-            background: rgba(4, 26, 46, .85);
-            color: var(--ice3);
-            font-size: 10px;
+            width: 26px;
+            height: 26px;
+            border-radius: var(--tg-radius-sm);
+            border: none;
+            background: var(--tg-bg-tertiary);
+            color: var(--tg-text-secondary);
+            font-size: 12px;
             cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
-            transition: .2s
+            transition: all var(--tg-transition);
+            box-shadow: var(--tg-shadow);
         }
 
-        .msg-action-btn.delete:hover {
-            background: rgba(239, 68, 68, .3);
-            border-color: #ef4444;
-            color: #fca5a5
+        .msg-action-btn:active {
+            transform: scale(0.92);
         }
 
-        .msg-action-btn.reply:hover {
-            background: rgba(93, 213, 248, .3);
-            border-color: var(--ice3);
-            color: #fff
+        .msg-action-btn.delete:active {
+            background: var(--tg-danger);
+            color: #fff;
         }
 
-        /* اسکرول به پایین */
+        .msg-action-btn.reply:active {
+            background: var(--tg-accent);
+            color: #fff;
+        }
+
+        /* دکمه اسکرول پایین */
         .scroll-bottom-btn {
             position: fixed;
-            bottom: 80px;
+            bottom: 75px;
             left: 50%;
             transform: translateX(-50%);
             z-index: 500;
-            width: 42px;
-            height: 42px;
+            width: 38px;
+            height: 38px;
             border-radius: 50%;
-            background: rgba(14, 165, 233, .3);
-            border: 1px solid rgba(93, 213, 248, .4);
-            color: #fff;
-            font-size: 18px;
+            background: var(--tg-bg-tertiary);
+            border: none;
+            color: var(--tg-text-secondary);
+            font-size: 16px;
             cursor: pointer;
             display: none;
             align-items: center;
             justify-content: center;
-            backdrop-filter: blur(10px);
-            animation: bounceIn .3s ease;
-            box-shadow: 0 5px 20px rgba(0, 0, 0, .3)
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+            transition: all var(--tg-transition);
         }
 
         .scroll-bottom-btn.show {
-            display: flex
+            display: flex;
+            animation: fadeInUp 0.2s ease;
+        }
+
+        .scroll-bottom-btn:active {
+            transform: translateX(-50%) scale(0.95);
+            background: var(--tg-accent);
+            color: #fff;
         }
 
         .scroll-bottom-btn .badge {
             position: absolute;
-            top: -6px;
-            right: -6px;
-            width: 18px;
+            top: -5px;
+            right: -5px;
+            min-width: 18px;
             height: 18px;
-            border-radius: 50%;
-            background: var(--red);
+            border-radius: 9px;
+            background: var(--tg-danger);
             color: #fff;
             font-size: 10px;
+            font-weight: 700;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-weight: 700
+            padding: 0 5px;
         }
 
-        @keyframes bounceIn {
+        @keyframes fadeInUp {
             from {
-                transform: translateX(-50%) scale(0)
+                opacity: 0;
+                transform: translateX(-50%) translateY(8px);
             }
 
             to {
-                transform: translateX(-50%) scale(1)
+                opacity: 1;
+                transform: translateX(-50%) translateY(0);
             }
         }
 
+        /* ناحیه ورودی */
         .chat-input-area {
-            padding: 10px 12px;
-            padding-bottom: calc(10px + var(--safe-bottom));
+            padding: 8px 12px;
+            padding-bottom: calc(8px + var(--safe-bottom));
             display: flex;
             gap: 8px;
             align-items: center;
-            background: rgba(14, 165, 233, .1);
-            border-top: 1px solid rgba(125, 211, 252, .15);
+            background: var(--tg-bg-secondary);
+            border-top: 1px solid var(--tg-border);
             flex-shrink: 0;
-            flex-wrap: wrap
+            flex-wrap: wrap;
         }
 
         .reply-bar {
             width: 100%;
             display: none;
-            padding: 6px 10px;
-            background: rgba(14, 165, 233, .15);
-            border-radius: 10px;
-            font-size: 11px;
-            color: rgba(179, 236, 255, .6);
+            padding: 6px 12px;
+            background: rgba(91, 160, 208, 0.08);
+            border-radius: var(--tg-radius-sm);
+            font-size: 12px;
+            color: var(--tg-accent);
             align-items: center;
-            justify-content: space-between
+            justify-content: space-between;
+            border-right: 2px solid var(--tg-accent);
+            margin-bottom: 4px;
         }
 
         .reply-bar.show {
-            display: flex
+            display: flex;
         }
 
         .reply-bar .cancel-reply {
             background: none;
             border: none;
-            color: #fca5a5;
+            color: var(--tg-text-secondary);
             cursor: pointer;
-            font-size: 14px
+            font-size: 16px;
+            padding: 2px 6px;
+            border-radius: 50%;
+        }
+
+        .reply-bar .cancel-reply:active {
+            color: var(--tg-danger);
+            background: rgba(224, 82, 82, 0.1);
         }
 
         .chat-input-area input {
             flex: 1;
-            padding: 10px 14px;
-            border-radius: 20px;
-            border: 1px solid rgba(125, 211, 252, .25);
-            background: rgba(14, 165, 233, .12);
-            color: var(--ice2);
+            padding: 9px 14px;
+            border-radius: var(--tg-radius-xl);
+            border: none;
+            background: var(--tg-bg);
+            color: var(--tg-text);
             font-size: 14px;
             font-family: 'Vazirmatn', sans-serif;
             outline: none;
-            min-width: 150px
+            min-width: 120px;
+            transition: all var(--tg-transition);
         }
 
         .chat-input-area input:focus {
-            border-color: var(--ice3)
+            background: var(--tg-bg-tertiary);
+        }
+
+        .chat-input-area input::placeholder {
+            color: var(--tg-text-muted);
         }
 
         .send-btn {
-            width: 42px;
-            height: 42px;
+            width: 38px;
+            height: 38px;
             border-radius: 50%;
-            border: 1px solid rgba(93, 213, 248, .4);
-            background: linear-gradient(135deg, rgba(14, 165, 233, .3), rgba(93, 213, 248, .15));
+            border: none;
+            background: var(--tg-accent);
             color: #fff;
-            font-size: 18px;
+            font-size: 16px;
             cursor: pointer;
-            transition: .3s;
+            transition: all var(--tg-transition);
             display: flex;
             align-items: center;
             justify-content: center;
-            flex-shrink: 0
+            flex-shrink: 0;
         }
 
+        .send-btn:active {
+            transform: scale(0.93);
+            background: var(--tg-accent-light);
+        }
+
+        /* === پنل ادمین === */
         .admin-panel {
             display: none;
             position: fixed;
@@ -619,330 +799,383 @@
             top: 0;
             bottom: 0;
             z-index: 300;
-            width: 280px;
-            background: rgba(4, 26, 46, .97);
-            backdrop-filter: blur(30px);
-            border-left: 1px solid rgba(251, 191, 36, .3);
-            padding: 20px;
-            overflow-y: auto
+            width: 320px;
+            background: var(--tg-bg);
+            border-left: 1px solid var(--tg-border);
+            padding: 16px;
+            overflow-y: auto;
+            box-shadow: -2px 0 10px rgba(0, 0, 0, 0.3);
         }
 
         .admin-panel.open {
-            display: block
+            display: block;
+            animation: slideIn 0.2s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateX(100%);
+            }
+
+            to {
+                transform: translateX(0);
+            }
         }
 
         .admin-panel h3 {
-            color: var(--gold);
-            font-size: 16px;
+            font-size: 17px;
+            font-weight: 600;
             margin-bottom: 16px;
-            text-align: center
+            color: var(--tg-text);
+            text-align: center;
         }
 
         .admin-user-item {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 10px;
-            border-bottom: 1px solid rgba(125, 211, 252, .1);
+            padding: 10px 0;
+            border-bottom: 1px solid var(--tg-border);
             gap: 8px;
-            flex-wrap: wrap
         }
 
         .admin-user-item span {
+            font-size: 14px;
+            color: var(--tg-text);
             flex: 1;
-            min-width: 100px;
-            font-size: 12px;
-            color: var(--ice2)
         }
 
         .admin-actions-row {
             display: flex;
-            gap: 4px
+            gap: 4px;
         }
 
         .admin-close {
             position: absolute;
             top: 12px;
             left: 12px;
-            width: 28px;
-            height: 28px;
-            border-radius: 50%;
-            border: 1px solid rgba(251, 191, 36, .3);
-            background: rgba(251, 191, 36, .1);
-            color: var(--gold);
-            font-size: 14px;
-            cursor: pointer
-        }
-
-        .toast {
-            position: fixed;
-            top: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            z-index: 9999;
-            padding: 12px 24px;
-            border-radius: 14px;
-            font-size: 14px;
-            font-weight: 600;
-            backdrop-filter: blur(30px);
-            opacity: 0;
-            transition: all .4s;
-            pointer-events: none;
-            border: 1px solid
-        }
-
-        .toast.show {
-            opacity: 1;
-            top: 30px
-        }
-
-        .toast-success {
-            background: rgba(34, 197, 94, .2);
-            border-color: rgba(34, 197, 94, .4);
-            color: #86efac
-        }
-
-        .toast-error {
-            background: rgba(239, 68, 68, .2);
-            border-color: rgba(239, 68, 68, .4);
-            color: #fca5a5
-        }
-
-        .mobile-toggle {
-            display: none;
-            background: none;
+            width: 30px;
+            height: 30px;
+            border-radius: var(--tg-radius-sm);
             border: none;
-            color: var(--ice2);
-            font-size: 20px;
-            cursor: pointer
+            background: var(--tg-bg-hover);
+            color: var(--tg-text-secondary);
+            font-size: 16px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
+        .admin-close:active {
+            background: var(--tg-bg-active);
+        }
+
+        /* === مودال === */
         .modal-glass-overlay {
             position: fixed;
             inset: 0;
-            background: rgba(0, 0, 0, .7);
-            backdrop-filter: blur(8px);
+            background: rgba(0, 0, 0, 0.6);
             z-index: 9999;
             display: flex;
             align-items: center;
             justify-content: center;
-            animation: fadeIn .2s ease
+            animation: fadeIn 0.15s ease;
         }
 
         .modal-glass-box {
-            background: linear-gradient(135deg, rgba(14, 165, 233, .2), rgba(4, 26, 46, .95));
-            border: 1px solid rgba(125, 211, 252, .4);
-            border-radius: 24px;
-            padding: 30px;
+            background: var(--tg-bg-secondary);
+            border: 1px solid var(--tg-border);
+            border-radius: var(--tg-radius-lg);
+            padding: 24px;
             text-align: center;
-            max-width: 400px;
+            max-width: 380px;
             width: 90%;
-            backdrop-filter: blur(30px);
-            box-shadow: 0 25px 60px rgba(0, 0, 0, .5), 0 0 40px rgba(93, 213, 248, .2);
-            animation: popIn .3s ease
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+            animation: scaleIn 0.15s ease;
         }
 
         .modal-glass-box h3 {
-            color: var(--ice2);
-            font-size: 18px;
-            margin-bottom: 12px
+            font-size: 17px;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: var(--tg-text);
         }
 
         .modal-glass-box p {
-            color: rgba(179, 236, 255, .6);
+            color: var(--tg-text-secondary);
             font-size: 14px;
             margin-bottom: 20px;
-            line-height: 1.8
+            line-height: 1.6;
         }
 
         .modal-glass-box input {
             width: 100%;
-            padding: 12px 16px;
-            border-radius: 14px;
-            border: 1px solid rgba(125, 211, 252, .3);
-            background: rgba(14, 165, 233, .15);
-            color: var(--ice2);
+            padding: 9px 12px;
+            border-radius: var(--tg-radius-sm);
+            border: 1px solid var(--tg-border);
+            background: var(--tg-bg);
+            color: var(--tg-text);
             font-size: 14px;
             font-family: 'Vazirmatn', sans-serif;
             outline: none;
-            margin-bottom: 15px;
-            text-align: right
+            margin-bottom: 14px;
+            text-align: right;
+        }
+
+        .modal-glass-box input:focus {
+            border-color: var(--tg-accent);
         }
 
         .modal-glass-btns {
             display: flex;
-            gap: 10px;
+            gap: 8px;
             justify-content: center;
-            flex-wrap: wrap
+            flex-wrap: wrap;
         }
 
         .modal-glass-btns button {
-            padding: 10px 24px;
-            border-radius: 14px;
+            padding: 9px 22px;
+            border-radius: var(--tg-radius);
             font-size: 14px;
-            font-weight: 600;
+            font-weight: 500;
             cursor: pointer;
             font-family: 'Vazirmatn', sans-serif;
-            transition: .3s;
-            border: 1px solid
+            transition: all var(--tg-transition);
+            border: none;
         }
 
         .btn-danger {
-            background: rgba(239, 68, 68, .25);
-            border-color: rgba(239, 68, 68, .5);
-            color: #fca5a5
+            background: var(--tg-danger);
+            color: #fff;
         }
 
-        .btn-danger:hover {
-            background: rgba(239, 68, 68, .45);
-            color: #fff
+        .btn-danger:active {
+            opacity: 0.8;
+            transform: scale(0.97);
         }
 
         .btn-primary {
-            background: rgba(93, 213, 248, .3);
-            border-color: rgba(93, 213, 248, .5);
-            color: #fff
+            background: var(--tg-accent);
+            color: #fff;
         }
 
-        .btn-primary:hover {
-            background: rgba(93, 213, 248, .5)
+        .btn-primary:active {
+            background: var(--tg-accent-light);
+            transform: scale(0.97);
         }
 
         .btn-cancel {
-            background: rgba(255, 255, 255, .08);
-            border-color: rgba(255, 255, 255, .15);
-            color: rgba(255, 255, 255, .6)
+            background: var(--tg-bg-hover);
+            color: var(--tg-text-secondary);
         }
 
-        .btn-cancel:hover {
-            background: rgba(255, 255, 255, .15);
-            color: #fff
+        .btn-cancel:active {
+            background: var(--tg-bg-active);
+            transform: scale(0.97);
         }
 
         .btn-success {
-            background: rgba(34, 197, 94, .25);
-            border-color: rgba(34, 197, 94, .5);
-            color: #86efac
+            background: var(--tg-success);
+            color: #fff;
         }
 
-        .btn-success:hover {
-            background: rgba(34, 197, 94, .45);
-            color: #fff
+        .btn-success:active {
+            opacity: 0.8;
+            transform: scale(0.97);
         }
 
         @keyframes fadeIn {
             from {
-                opacity: 0
+                opacity: 0;
             }
 
             to {
-                opacity: 1
+                opacity: 1;
             }
         }
 
-        @keyframes popIn {
+        @keyframes scaleIn {
             from {
-                transform: scale(.9);
-                opacity: 0
+                transform: scale(0.96);
+                opacity: 0;
             }
 
             to {
                 transform: scale(1);
-                opacity: 1
+                opacity: 1;
             }
         }
 
-        @media(max-width:768px) {
+        /* === Toast === */
+        .toast {
+            position: fixed;
+            top: 12px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 9999;
+            padding: 10px 20px;
+            border-radius: var(--tg-radius);
+            font-size: 13px;
+            font-weight: 500;
+            opacity: 0;
+            transition: all 0.25s ease;
+            pointer-events: none;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        .toast.show {
+            opacity: 1;
+            top: 20px;
+        }
+
+        .toast-success {
+            background: var(--tg-success);
+            color: #fff;
+        }
+
+        .toast-error {
+            background: var(--tg-danger);
+            color: #fff;
+        }
+
+        /* === رسپانسیو === */
+        @media (max-width: 768px) {
             .chat-sidebar {
-                display: none;
                 position: fixed;
                 left: 0;
                 top: 0;
                 bottom: 0;
                 z-index: 200;
-                width: 260px
+                transform: translateX(-100%);
+                box-shadow: 2px 0 15px rgba(0, 0, 0, 0.3);
             }
 
             .chat-sidebar.open {
-                display: flex
+                transform: translateX(0);
+            }
+
+            .back-btn {
+                display: block;
             }
 
             .mobile-toggle {
-                display: block
+                display: block;
             }
 
             .message {
-                max-width: 88%
+                max-width: 85%;
             }
 
             .admin-panel {
-                width: 100%
-            }
-
-            .modal-glass-box {
-                width: 95%;
-                padding: 24px 18px
+                width: 100%;
             }
 
             .scroll-bottom-btn {
-                bottom: 90px
+                bottom: 85px;
+            }
+
+            .chat-messages {
+                padding: 8px 10px;
             }
         }
     </style>
 </head>
 
-<body class="chat-page-body">
-    <div class="mist-layer">
-        <div class="mist mist-1"></div>
-        <div class="mist mist-2"></div>
-        <div class="mist mist-3"></div>
-    </div>
+<body>
     <div class="chat-container">
+        <!-- سایدبار تلگرامی -->
         <aside class="chat-sidebar" id="sidebar">
             <div class="sidebar-header">
-                <h3>🏎️ چت ماشین‌بازها</h3><button class="back-btn" id="closeSidebarBtn">← برگشت</button>
+                <h3>پیام‌ها</h3>
+                <button class="back-btn" id="closeSidebarBtn">بازگشت</button>
             </div>
-            <div class="user-card-mini">
+
+            <!-- پروفایل کاربر -->
+            <div class="user-profile">
                 <div class="user-avatar-mini" id="sidebarAvatar">👤</div>
                 <div class="user-info-mini">
-                    <div class="user-name-display" id="displayName">در حال ورود...</div><span
-                        class="user-role-badge user" id="roleBadge">کاربر</span>
-                </div><button class="logout-btn-mini" id="logoutBtn">🚪</button><button class="logout-btn-mini"
-                    id="adminPanelBtn"
-                    style="display:none;background:rgba(251,191,36,.15);border-color:rgba(251,191,36,.3);color:var(--gold)">👑</button>
-            </div>
-            <div class="sidebar-section">
-                <h4>گروه‌ها</h4>
-                <div class="group-item active" data-group="general"><span class="group-icon">💬</span>
-                    <div><span class="group-name">عمومی</span><span class="group-count">--</span></div>
+                    <div class="user-name-display" id="displayName">در حال ورود...</div>
+                    <span class="user-role-badge" id="roleBadge">آنلاین</span>
                 </div>
-                <div class="group-item" data-group="tuning"><span class="group-icon">🔧</span>
-                    <div><span class="group-name">تیونینگ</span><span class="group-count">--</span></div>
+                <div class="user-actions">
+                    <button class="icon-btn admin-btn" id="adminPanelBtn" title="پنل مدیریت">⚙</button>
+                    <button class="icon-btn" id="logoutBtn" title="خروج">↩</button>
+                </div>
+            </div>
+
+            <!-- جستجو -->
+            <div class="search-box">
+                <input type="text" class="search-input" placeholder="جستجوی گروه‌ها..." id="searchInput">
+            </div>
+
+            <!-- لیست گروه‌ها -->
+            <div class="chats-list" id="chatsList">
+                <div class="chat-item active" data-group="general">
+                    <div class="chat-avatar">💬</div>
+                    <div class="chat-info">
+                        <div class="chat-name">گروه عمومی</div>
+                        <div class="chat-preview">بحث و گفتگوی آزاد</div>
+                    </div>
+                    <div class="chat-meta">
+                        <span class="chat-time">الان</span>
+                        <span class="online-badge">۱۲ آنلاین</span>
+                    </div>
+                </div>
+                <div class="chat-item" data-group="tuning">
+                    <div class="chat-avatar">🔧</div>
+                    <div class="chat-info">
+                        <div class="chat-name">تیونینگ و فنی</div>
+                        <div class="chat-preview">مشاوره فنی و تقویت خودرو</div>
+                    </div>
+                    <div class="chat-meta">
+                        <span class="chat-time">الان</span>
+                        <span class="online-badge">۸ آنلاین</span>
+                    </div>
                 </div>
             </div>
         </aside>
+
+        <!-- بخش اصلی چت -->
         <main class="chat-main">
-            <div class="chat-header"><button class="mobile-toggle" id="menuToggle">☰</button>
-                <div>
-                    <h2 id="groupTitle">💬 عمومی</h2><span class="online-count" id="onlineCount">--</span>
-                </div><span class="online-dot"></span>
+            <div class="chat-header">
+                <button class="mobile-toggle" id="menuToggle">☰</button>
+                <div class="chat-header-info">
+                    <h2 id="groupTitle">💬 گروه عمومی</h2>
+                    <span class="online-count" id="onlineCount">۱۲ نفر آنلاین</span>
+                </div>
+                <span class="online-dot" title="آنلاین"></span>
             </div>
+
             <div class="typing-indicator" id="typingIndicator"></div>
+
             <div class="chat-messages" id="chatMessages"></div>
-            <div class="scroll-bottom-btn" id="scrollBottomBtn">↓<span class="badge" id="newMsgBadge"
-                    style="display:none">0</span></div>
+
+            <div class="scroll-bottom-btn" id="scrollBottomBtn">
+                ↓
+                <span class="badge" id="newMsgBadge" style="display:none">0</span>
+            </div>
+
             <div class="chat-input-area">
-                <div class="reply-bar" id="replyBar"><span id="replyText"></span><button class="cancel-reply"
-                        id="cancelReply">✕</button></div>
-                <input type="text" id="messageInput" placeholder="پیامت رو بنویس..." autocomplete="off"
-                    maxlength="500"><button class="send-btn" id="sendBtn">📨</button>
+                <div class="reply-bar" id="replyBar">
+                    <span id="replyText"></span>
+                    <button class="cancel-reply" id="cancelReply">✕</button>
+                </div>
+                <input type="text" id="messageInput" placeholder="پیام..." autocomplete="off" maxlength="500"
+                    dir="auto">
+                <button class="send-btn" id="sendBtn">➤</button>
             </div>
         </main>
     </div>
-    <div class="admin-panel" id="adminPanel"><button class="admin-close" id="adminClose">✕</button>
-        <h3>👑 پنل ادمین</h3>
+
+    <!-- پنل ادمین -->
+    <div class="admin-panel" id="adminPanel">
+        <button class="admin-close" id="adminClose">✕</button>
+        <h3>مدیریت گروه</h3>
         <div id="adminUserList"></div>
     </div>
+
+    <!-- Toast -->
     <div class="toast" id="toast"></div>
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -950,57 +1183,142 @@
     <script>
         (async function () {
             var userData = await checkAuth();
-            if (!userData) { showGlassModal('❌ خطا', 'اول باید وارد بشی!', [{ text: 'ورود', class: 'btn-primary', action: function () { window.location.href = 'index.html'; } }]); return }
-            var username = userData.username, userId = userData.id, avatar = userData.avatar || '👤';
-            var userRole = userData.role || 'user', currentGroup = 'general', renderedIds = new Set();
-            var supabase = supabaseClient;
-            var replyTo = null, unreadCount = 0, isAtBottom = true;
+            if (!userData) {
+                showGlassModal('⛔ ورود لازم است', 'برای استفاده از چت باید وارد حساب خود شوید.', [
+                    { text: 'ورود', class: 'btn-primary', action: function () { window.location.href = 'index.html'; } }
+                ]);
+                return;
+            }
 
-            var chatMessages = document.getElementById('chatMessages'), messageInput = document.getElementById('messageInput'),
-                sendBtn = document.getElementById('sendBtn'), groupTitle = document.getElementById('groupTitle'),
-                menuToggle = document.getElementById('menuToggle'), sidebar = document.getElementById('sidebar'),
-                onlineCount = document.getElementById('onlineCount'), displayName = document.getElementById('displayName'),
-                roleBadge = document.getElementById('roleBadge'), sidebarAvatar = document.getElementById('sidebarAvatar'),
-                logoutBtn = document.getElementById('logoutBtn'), adminPanelBtn = document.getElementById('adminPanelBtn'),
-                adminPanel = document.getElementById('adminPanel'), adminClose = document.getElementById('adminClose'),
+            var username = userData.username,
+                userId = userData.id,
+                avatar = userData.avatar || '👤';
+            var userRole = userData.role || 'user',
+                currentGroup = 'general',
+                renderedIds = new Set();
+            var supabase = supabaseClient;
+            var replyTo = null,
+                unreadCount = 0,
+                isAtBottom = true;
+
+            var chatMessages = document.getElementById('chatMessages'),
+                messageInput = document.getElementById('messageInput'),
+                sendBtn = document.getElementById('sendBtn'),
+                groupTitle = document.getElementById('groupTitle'),
+                menuToggle = document.getElementById('menuToggle'),
+                sidebar = document.getElementById('sidebar'),
+                onlineCount = document.getElementById('onlineCount'),
+                displayName = document.getElementById('displayName'),
+                roleBadge = document.getElementById('roleBadge'),
+                sidebarAvatar = document.getElementById('sidebarAvatar'),
+                logoutBtn = document.getElementById('logoutBtn'),
+                adminPanelBtn = document.getElementById('adminPanelBtn'),
+                adminPanel = document.getElementById('adminPanel'),
+                adminClose = document.getElementById('adminClose'),
                 adminUserList = document.getElementById('adminUserList'),
                 typingIndicator = document.getElementById('typingIndicator'),
                 scrollBottomBtn = document.getElementById('scrollBottomBtn'),
                 newMsgBadge = document.getElementById('newMsgBadge'),
-                replyBar = document.getElementById('replyBar'), replyText = document.getElementById('replyText'),
-                cancelReply = document.getElementById('cancelReply');
+                replyBar = document.getElementById('replyBar'),
+                replyText = document.getElementById('replyText'),
+                cancelReply = document.getElementById('cancelReply'),
+                searchInput = document.getElementById('searchInput');
 
             var closeSidebarBtn = document.getElementById('closeSidebarBtn');
-            if (closeSidebarBtn) closeSidebarBtn.addEventListener('click', function () { sidebar.classList.remove('open'); });
+            if (closeSidebarBtn) {
+                closeSidebarBtn.addEventListener('click', function () { sidebar.classList.remove('open'); });
+            }
 
-            function updateUI() { displayName.textContent = username; sidebarAvatar.textContent = avatar; if (userRole === 'admin') { roleBadge.textContent = 'ادمین 👑'; roleBadge.className = 'user-role-badge admin'; adminPanelBtn.style.display = 'block' } else { roleBadge.textContent = 'کاربر'; roleBadge.className = 'user-role-badge user'; adminPanelBtn.style.display = 'none' } }
+            function updateUI() {
+                displayName.textContent = username;
+                sidebarAvatar.textContent = avatar;
+                if (userRole === 'admin') {
+                    roleBadge.textContent = 'مدیر';
+                    roleBadge.className = 'user-role-badge admin';
+                    adminPanelBtn.style.display = 'flex';
+                } else {
+                    roleBadge.textContent = 'آنلاین';
+                    roleBadge.className = 'user-role-badge';
+                    adminPanelBtn.style.display = 'none';
+                }
+            }
             updateUI();
 
-            function showToast(msg, type) { type = type || 'info'; var t = document.getElementById('toast'); if (!t) return; t.textContent = msg; t.className = 'toast toast-' + type + ' show'; setTimeout(function () { t.classList.remove('show'); }, 2500); }
-            function showGlassModal(title, message, buttons) { var overlay = document.createElement('div'); overlay.className = 'modal-glass-overlay'; var btnsHtml = buttons.map(function (b, i) { return '<button class="' + b.class + '" id="modalBtn' + i + '">' + b.text + '</button>'; }).join(''); overlay.innerHTML = '<div class="modal-glass-box"><h3>' + title + '</h3><p>' + message + '</p><div class="modal-glass-btns">' + btnsHtml + '</div></div>'; document.body.appendChild(overlay); buttons.forEach(function (b, i) { document.getElementById('modalBtn' + i).onclick = function () { document.body.removeChild(overlay); if (b.action) b.action(); }; }); overlay.addEventListener('click', function (e) { if (e.target === overlay) document.body.removeChild(overlay); }); }
+            function showToast(msg, type) {
+                type = type || 'info';
+                var t = document.getElementById('toast');
+                if (!t) return;
+                t.textContent = msg;
+                t.className = 'toast toast-' + type + ' show';
+                setTimeout(function () { t.classList.remove('show'); }, 2000);
+            }
 
-            function linkify(text) { var urlRegex = /(https?:\/\/[^\s<]+)/g; return text.replace(urlRegex, function (url) { return '<a href="' + url + '" target="_blank" rel="noopener">' + url + '</a>'; }); }
+            function showGlassModal(title, message, buttons) {
+                var overlay = document.createElement('div');
+                overlay.className = 'modal-glass-overlay';
+                var btnsHtml = buttons.map(function (b, i) {
+                    return '<button class="' + b.class + '" id="modalBtn' + i + '">' + b.text + '</button>';
+                }).join('');
+                overlay.innerHTML = '<div class="modal-glass-box"><h3>' + title + '</h3><p>' + message + '</p><div class="modal-glass-btns">' + btnsHtml + '</div></div>';
+                document.body.appendChild(overlay);
+                buttons.forEach(function (b, i) {
+                    document.getElementById('modalBtn' + i).onclick = function () {
+                        document.body.removeChild(overlay);
+                        if (b.action) b.action();
+                    };
+                });
+                overlay.addEventListener('click', function (e) {
+                    if (e.target === overlay) document.body.removeChild(overlay);
+                });
+            }
 
-            // ===== ریپلای =====
-            cancelReply.addEventListener('click', function () { replyTo = null; replyBar.classList.remove('show'); messageInput.placeholder = 'پیامت رو بنویس...'; });
+            function linkify(text) {
+                var urlRegex = /(https?:\/\/[^\s<]+)/g;
+                return text.replace(urlRegex, function (url) {
+                    return '<a href="' + url + '" target="_blank" rel="noopener">' + url + '</a>';
+                });
+            }
+
+            cancelReply.addEventListener('click', function () {
+                replyTo = null;
+                replyBar.classList.remove('show');
+                messageInput.placeholder = 'پیام...';
+            });
+
             window._replyMsg = function (id, msgUsername, msgText) {
                 replyTo = { id: id, username: msgUsername, text: msgText.substring(0, 50) };
                 replyBar.classList.add('show');
-                replyText.textContent = '↩ پاسخ به ' + msgUsername + ': ' + msgText.substring(0, 40) + '...';
-                messageInput.placeholder = 'پاسخت رو بنویس...';
+                replyText.textContent = msgUsername + ': ' + msgText.substring(0, 40) + '...';
+                messageInput.placeholder = 'پاسخ...';
                 messageInput.focus();
             };
 
-            // ===== اسکرول =====
-            chatMessages.addEventListener('scroll', function () { isAtBottom = chatMessages.scrollHeight - chatMessages.scrollTop - chatMessages.clientHeight < 50; if (isAtBottom) { scrollBottomBtn.classList.remove('show'); unreadCount = 0; newMsgBadge.style.display = 'none'; } });
-            scrollBottomBtn.addEventListener('click', function () { chatMessages.scrollTop = chatMessages.scrollHeight; scrollBottomBtn.classList.remove('show'); unreadCount = 0; newMsgBadge.style.display = 'none'; isAtBottom = true; });
+            chatMessages.addEventListener('scroll', function () {
+                isAtBottom = chatMessages.scrollHeight - chatMessages.scrollTop - chatMessages.clientHeight < 50;
+                if (isAtBottom) {
+                    scrollBottomBtn.classList.remove('show');
+                    unreadCount = 0;
+                    newMsgBadge.style.display = 'none';
+                }
+            });
 
-            // ===== تایپینگ =====
-            var typingTimer, typingUsers = {};
+            scrollBottomBtn.addEventListener('click', function () {
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+                scrollBottomBtn.classList.remove('show');
+                unreadCount = 0;
+                newMsgBadge.style.display = 'none';
+                isAtBottom = true;
+            });
+
+            var typingTimer;
             messageInput.addEventListener('input', function () {
                 clearTimeout(typingTimer);
-                supabase.from('typing').upsert({ user_id: userId, username: username, group_name: currentGroup, timestamp: new Date().toISOString() });
-                typingTimer = setTimeout(function () { supabase.from('typing').delete().eq('user_id', userId); }, 2000);
+                supabase.from('typing').upsert({
+                    user_id: userId, username: username, group_name: currentGroup, timestamp: new Date().toISOString()
+                });
+                typingTimer = setTimeout(function () {
+                    supabase.from('typing').delete().eq('user_id', userId);
+                }, 2000);
             });
 
             async function updateTypingIndicator() {
@@ -1010,38 +1328,205 @@
                 var others = typings.filter(function (t) { return t.user_id !== userId; });
                 if (others.length > 0) {
                     var names = others.map(function (t) { return t.username; }).join(' و ');
-                    typingIndicator.innerHTML = '<span class="typing-dots"><span></span><span></span><span></span></span> ' + names + ' داره تایپ می‌کنه...';
-                } else { typingIndicator.innerHTML = ''; }
+                    typingIndicator.innerHTML = '<span class="typing-dots"><span></span><span></span><span></span></span> ' + names + ' در حال تایپ...';
+                } else {
+                    typingIndicator.innerHTML = '';
+                }
             }
 
-            // ===== EDIT MODAL =====
-            function editMessageModal(msgId, oldText) { var overlay = document.createElement('div'); overlay.className = 'modal-glass-overlay'; overlay.innerHTML = '<div class="modal-glass-box"><h3>✏️ ویرایش پیام</h3><input id="editInput" value="' + oldText.replace(/"/g, '&quot;') + '" maxlength="500"><div class="modal-glass-btns"><button class="btn-primary" id="editSave">💾 ذخیره</button><button class="btn-cancel" id="editCancel">لغو</button></div></div>'; document.body.appendChild(overlay); document.getElementById('editSave').onclick = function () { var newText = document.getElementById('editInput').value.trim(); document.body.removeChild(overlay); if (newText && newText !== oldText) saveEdit(msgId, newText); }; document.getElementById('editCancel').onclick = function () { document.body.removeChild(overlay); }; overlay.addEventListener('click', function (e) { if (e.target === overlay) document.body.removeChild(overlay); }); }
-            async function saveEdit(msgId, newText) { await supabase.from('chat_messages').update({ text: newText, edited: true }).eq('id', msgId); var bubble = document.querySelector('#msg-' + msgId + ' .msg-bubble'); if (bubble) bubble.innerHTML = linkify(newText); var info = document.querySelector('#msg-' + msgId + ' .msg-info'); if (info) info.innerHTML = '<span>' + username + '</span><span class="edited-badge">(ویرایش)</span><span>' + new Date().toLocaleTimeString('fa-IR', { hour: '2-digit', minute: '2-digit' }) + '</span>'; }
+            function editMessageModal(msgId, oldText) {
+                var overlay = document.createElement('div');
+                overlay.className = 'modal-glass-overlay';
+                overlay.innerHTML = '<div class="modal-glass-box"><h3>✏️ ویرایش پیام</h3><input id="editInput" value="' + oldText.replace(/"/g, '&quot;') + '" maxlength="500"><div class="modal-glass-btns"><button class="btn-primary" id="editSave">ذخیره</button><button class="btn-cancel" id="editCancel">انصراف</button></div></div>';
+                document.body.appendChild(overlay);
+                document.getElementById('editSave').onclick = function () {
+                    var newText = document.getElementById('editInput').value.trim();
+                    document.body.removeChild(overlay);
+                    if (newText && newText !== oldText) saveEdit(msgId, newText);
+                };
+                document.getElementById('editCancel').onclick = function () { document.body.removeChild(overlay); };
+                overlay.addEventListener('click', function (e) { if (e.target === overlay) document.body.removeChild(overlay); });
+            }
 
-            logoutBtn.addEventListener('click', function () { showGlassModal('🚪 خروج', 'می‌خوای از چت خارج بشی؟', [{ text: '🚪 خروج', class: 'btn-danger', action: async function () { await logoutUser(); window.location.href = 'index.html'; } }, { text: 'بمون', class: 'btn-cancel', action: function () { } }]); });
+            async function saveEdit(msgId, newText) {
+                await supabase.from('chat_messages').update({ text: newText, edited: true }).eq('id', msgId);
+                var bubble = document.querySelector('#msg-' + msgId + ' .msg-bubble');
+                if (bubble) bubble.innerHTML = linkify(newText);
+                var timeEl = document.querySelector('#msg-' + msgId + ' .msg-time');
+                if (timeEl) timeEl.innerHTML = new Date().toLocaleTimeString('fa-IR', { hour: '2-digit', minute: '2-digit' }) + ' (ویرایش)';
+            }
+
+            logoutBtn.addEventListener('click', function () {
+                showGlassModal('خروج', 'از حساب خارج می‌شوید؟', [
+                    { text: 'خروج', class: 'btn-danger', action: async function () { await logoutUser(); window.location.href = 'index.html'; } },
+                    { text: 'انصراف', class: 'btn-cancel', action: function () { } }
+                ]);
+            });
+
             adminPanelBtn.addEventListener('click', function () { adminPanel.classList.toggle('open'); renderAdminPanel(); });
             adminClose.addEventListener('click', function () { adminPanel.classList.remove('open'); });
 
-            async function renderAdminPanel() { var result = await supabase.from('profiles').select('*'); var users = result.data; var bannedResult = await supabase.from('banned_users').select('user_id'); var bannedIds = bannedResult.data ? bannedResult.data.map(function (b) { return b.user_id; }) : []; adminUserList.innerHTML = users ? users.map(function (u) { var isBanned = bannedIds.indexOf(u.id) !== -1; return '<div class="admin-user-item"><span>👤 ' + (u.username || u.email) + '</span><div class="admin-actions-row">' + (u.role !== 'admin' ? '<button class="msg-action-btn" onclick="window._upRole(\'' + u.id + '\',\'admin\')">👑</button>' : '<button class="msg-action-btn" onclick="window._upRole(\'' + u.id + '\',\'user\')">⬇️</button>') + (u.id !== userId ? (isBanned ? '<button class="msg-action-btn" onclick="window._unbanUser(\'' + u.id + '\')">🔓</button>' : '<button class="msg-action-btn delete" onclick="window._banUser(\'' + u.id + '\')">🚫</button>') : '') + '</div></div>'; }).join('') : '<p style="color:rgba(179,236,255,.3)">کسی نیست</p>'; }
-            window._upRole = async function (uid, role) { await supabase.from('profiles').upsert({ id: uid, role: role }); showToast('✅ انجام شد', 'success'); renderAdminPanel(); };
-            window._banUser = function (uid) { showGlassModal('🚫 بن کردن کاربر', 'این کاربر برای همیشه از چت محروم بشه؟', [{ text: '🚫 بن کن', class: 'btn-danger', action: async function () { await supabase.from('banned_users').upsert({ user_id: uid, banned_by: userId, banned_at: new Date().toISOString() }); await supabase.from('chat_messages').delete().eq('user_id', uid); await supabase.from('online_users').delete().eq('user_id', uid); showToast('🚫 کاربر بن شد', 'success'); renderAdminPanel(); loadMessages(); } }, { text: 'لغو', class: 'btn-cancel', action: function () { } }]); };
-            window._unbanUser = function (uid) { showGlassModal('🔓 آزاد کردن کاربر', 'این کاربر دوباره بتونه چت کنه؟', [{ text: '🔓 آزاد کن', class: 'btn-success', action: async function () { await supabase.from('banned_users').delete().eq('user_id', uid); showToast('🔓 کاربر آزاد شد', 'success'); renderAdminPanel(); } }, { text: 'لغو', class: 'btn-cancel', action: function () { } }]); };
-            window._delMsg = function (id) { showGlassModal('🗑 حذف پیام', 'این پیام برای همیشه حذف بشه؟', [{ text: '🗑 حذف', class: 'btn-danger', action: async function () { await supabase.from('chat_messages').delete().eq('id', id); var el = document.getElementById('msg-' + id); if (el) el.remove(); } }, { text: 'لغو', class: 'btn-cancel', action: function () { } }]); };
+            async function renderAdminPanel() {
+                var result = await supabase.from('profiles').select('*');
+                var users = result.data;
+                var bannedResult = await supabase.from('banned_users').select('user_id');
+                var bannedIds = bannedResult.data ? bannedResult.data.map(function (b) { return b.user_id; }) : [];
+                adminUserList.innerHTML = users ? users.map(function (u) {
+                    var isBanned = bannedIds.indexOf(u.id) !== -1;
+                    return '<div class="admin-user-item"><span>' + (u.username || u.email) + '</span><div class="admin-actions-row">' +
+                        (u.role !== 'admin' ? '<button class="msg-action-btn" onclick="window._upRole(\'' + u.id + '\',\'admin\')">👑</button>' : '<button class="msg-action-btn" onclick="window._upRole(\'' + u.id + '\',\'user\')">⬇</button>') +
+                        (u.id !== userId ? (isBanned ? '<button class="msg-action-btn" onclick="window._unbanUser(\'' + u.id + '\')">🔓</button>' : '<button class="msg-action-btn delete" onclick="window._banUser(\'' + u.id + '\')">🚫</button>') : '') +
+                        '</div></div>';
+                }).join('') : '<p style="color: var(--tg-text-muted); text-align: center;">کاربری نیست</p>';
+            }
 
-            async function loadMessages() { var result = await supabase.from('chat_messages').select('*').eq('group_name', currentGroup).order('created_at', { ascending: true }).limit(200); var data = result.data; if (!data || !data.length) { chatMessages.innerHTML = '<div style="text-align:center;color:rgba(179,236,255,.3);padding:40px">💬<br>هنوز پیامی نیست!</div>'; renderedIds.clear(); return } var hasNew = false; data.forEach(function (msg) { if (!renderedIds.has(msg.id)) { appendMessage(msg); hasNew = true; if (!isAtBottom) { unreadCount++; newMsgBadge.textContent = unreadCount; newMsgBadge.style.display = 'flex'; scrollBottomBtn.classList.add('show'); } } }); if (hasNew && isAtBottom) chatMessages.scrollTop = chatMessages.scrollHeight; }
+            window._upRole = async function (uid, role) { await supabase.from('profiles').upsert({ id: uid, role: role }); showToast('انجام شد', 'success'); renderAdminPanel(); };
+            window._banUser = function (uid) {
+                showGlassModal('اخراج کاربر', 'کاربر برای همیشه از گروه اخراج شود؟', [
+                    { text: 'اخراج', class: 'btn-danger', action: async function () { await supabase.from('banned_users').upsert({ user_id: uid, banned_by: userId, banned_at: new Date().toISOString() }); await supabase.from('chat_messages').delete().eq('user_id', uid); await supabase.from('online_users').delete().eq('user_id', uid); showToast('کاربر اخراج شد', 'success'); renderAdminPanel(); loadMessages(); } },
+                    { text: 'انصراف', class: 'btn-cancel', action: function () { } }
+                ]);
+            };
+            window._unbanUser = function (uid) {
+                showGlassModal('بازگشت کاربر', 'کاربر به گروه بازگردد؟', [
+                    { text: 'بازگرداندن', class: 'btn-success', action: async function () { await supabase.from('banned_users').delete().eq('user_id', uid); showToast('کاربر بازگشت', 'success'); renderAdminPanel(); } },
+                    { text: 'انصراف', class: 'btn-cancel', action: function () { } }
+                ]);
+            };
+            window._delMsg = function (id) {
+                showGlassModal('حذف پیام', 'این پیام حذف شود؟', [
+                    { text: 'حذف', class: 'btn-danger', action: async function () { await supabase.from('chat_messages').delete().eq('id', id); var el = document.getElementById('msg-' + id); if (el) el.remove(); } },
+                    { text: 'انصراف', class: 'btn-cancel', action: function () { } }
+                ]);
+            };
 
-            function appendMessage(msg) { if (renderedIds.has(msg.id)) return; var isOwn = msg.user_id === userId, isAdmin = userRole === 'admin'; var div = document.createElement('div'); div.className = 'message' + (isOwn ? ' own' : ''); div.id = 'msg-' + msg.id; var replyHtml = ''; if (msg.reply_to) { replyHtml = '<div class="msg-reply-to" onclick="document.getElementById(\'msg-' + msg.reply_to + '\')?.scrollIntoView({behavior:\'smooth\'})">↩ پاسخ به ' + msg.reply_username + '</div>'; } var actions = '<button class="msg-action-btn reply" onclick="window._replyMsg(\'' + msg.id + '\',\'' + msg.username + '\',\'' + msg.text.replace(/'/g, "\\'") + '\')">↩</button>'; if (isOwn) actions += '<button class="msg-action-btn" onclick="window._editMsg(\'' + msg.id + '\',\'' + msg.text.replace(/'/g, "\\'") + '\')">✏️</button>'; if (isOwn || isAdmin) actions += '<button class="msg-action-btn delete" onclick="window._delMsg(\'' + msg.id + '\')">🗑</button>'; div.innerHTML = '<div class="msg-avatar" title="' + msg.username + '">' + (msg.avatar || '👤') + '</div><div class="msg-content">' + replyHtml + '<div class="msg-info"><span>' + (msg.username || 'ناشناس') + '</span>' + (msg.edited ? '<span class="edited-badge">(ویرایش)</span>' : '') + '<span>' + new Date(msg.created_at).toLocaleTimeString('fa-IR', { hour: '2-digit', minute: '2-digit' }) + '</span></div><div class="msg-bubble">' + linkify(msg.text) + '</div><div class="msg-actions">' + actions + '</div></div>'; chatMessages.appendChild(div); renderedIds.add(msg.id); }
+            async function loadMessages() {
+                var result = await supabase.from('chat_messages').select('*').eq('group_name', currentGroup).order('created_at', { ascending: true }).limit(200);
+                var data = result.data;
+                if (!data || !data.length) {
+                    chatMessages.innerHTML = '<div style="text-align:center;color:var(--tg-text-muted);padding:60px 20px;font-size:14px;">💬<br>هنوز پیامی نیست<br><span style="font-size:12px;">گفتگو را شروع کنید</span></div>';
+                    renderedIds.clear();
+                    return;
+                }
+                var hasNew = false;
+                data.forEach(function (msg) {
+                    if (!renderedIds.has(msg.id)) {
+                        appendMessage(msg);
+                        hasNew = true;
+                        if (!isAtBottom) {
+                            unreadCount++;
+                            newMsgBadge.textContent = unreadCount;
+                            newMsgBadge.style.display = 'flex';
+                            scrollBottomBtn.classList.add('show');
+                        }
+                    }
+                });
+                if (hasNew && isAtBottom) chatMessages.scrollTop = chatMessages.scrollHeight;
+            }
 
-            async function sendMessage() { var text = messageInput.value.trim(); if (!text) return; var bannedResult = await supabase.from('banned_users').select('user_id').eq('user_id', userId); if (bannedResult.data && bannedResult.data.length > 0) { showToast('🚫 شما بن شدید!', 'error'); return } var msg = { user_id: userId, username: username, avatar: avatar, text: text, group_name: currentGroup, edited: false }; if (replyTo) { msg.reply_to = replyTo.id; msg.reply_username = replyTo.username; replyTo = null; replyBar.classList.remove('show'); messageInput.placeholder = 'پیامت رو بنویس...'; } var result = await supabase.from('chat_messages').insert(msg); if (!result.error) { messageInput.value = ''; supabase.from('typing').delete().eq('user_id', userId); loadMessages(); } else showToast('❌ خطا در ارسال', 'error'); }
+            function appendMessage(msg) {
+                if (renderedIds.has(msg.id)) return;
+                var isOwn = msg.user_id === userId,
+                    isAdmin = userRole === 'admin';
+                var div = document.createElement('div');
+                div.className = 'message first' + (isOwn ? ' own' : '');
+                div.id = 'msg-' + msg.id;
+
+                var replyHtml = '';
+                if (msg.reply_to) {
+                    replyHtml = '<div class="msg-reply-to" onclick="document.getElementById(\'msg-' + msg.reply_to + '\')?.scrollIntoView({behavior:\'smooth\'})">↩ ' + msg.reply_username + '</div>';
+                }
+
+                var timeStr = new Date(msg.created_at).toLocaleTimeString('fa-IR', { hour: '2-digit', minute: '2-digit' });
+                var editedStr = msg.edited ? ' <span class="edited-badge">ویرایش</span>' : '';
+
+                var actions = '<button class="msg-action-btn reply" onclick="window._replyMsg(\'' + msg.id + '\',\'' + msg.username + '\',\'' + msg.text.replace(/'/g, "\\'") + '\')" title="پاسخ">↩</button>';
+                if (isOwn) actions += '<button class="msg-action-btn" onclick="window._editMsg(\'' + msg.id + '\',\'' + msg.text.replace(/'/g, "\\'").replace(/"/g, '&quot;') + '\')" title="ویرایش">✏️</button>';
+                if (isOwn || isAdmin) actions += '<button class="msg-action-btn delete" onclick="window._delMsg(\'' + msg.id + '\')" title="حذف">🗑</button>';
+
+                div.innerHTML = '<div class="msg-avatar" title="' + msg.username + '">' + (msg.avatar || '👤') + '</div>' +
+                    '<div class="msg-content">' +
+                    '<div class="msg-header"><span class="msg-username">' + (msg.username || 'ناشناس') + '</span><span class="msg-time">' + timeStr + editedStr + '</span></div>' +
+                    replyHtml +
+                    '<div class="msg-bubble">' + linkify(msg.text) + '</div>' +
+                    '<div class="msg-actions">' + actions + '</div>' +
+                    '</div>';
+                chatMessages.appendChild(div);
+                renderedIds.add(msg.id);
+            }
+
+            async function sendMessage() {
+                var text = messageInput.value.trim();
+                if (!text) return;
+                var bannedResult = await supabase.from('banned_users').select('user_id').eq('user_id', userId);
+                if (bannedResult.data && bannedResult.data.length > 0) { showToast('🚫 دسترسی محدود', 'error'); return; }
+                var msg = { user_id: userId, username: username, avatar: avatar, text: text, group_name: currentGroup, edited: false };
+                if (replyTo) { msg.reply_to = replyTo.id; msg.reply_username = replyTo.username; replyTo = null; replyBar.classList.remove('show'); messageInput.placeholder = 'پیام...'; }
+                var result = await supabase.from('chat_messages').insert(msg);
+                if (!result.error) { messageInput.value = ''; supabase.from('typing').delete().eq('user_id', userId); loadMessages(); } else showToast('خطا در ارسال', 'error');
+            }
 
             window._editMsg = function (id, oldText) { editMessageModal(id, oldText); };
-            document.querySelectorAll('.group-item').forEach(function (item) { item.addEventListener('click', function () { switchGroup(item.dataset.group); }); });
-            function switchGroup(group) { currentGroup = group; document.querySelectorAll('.group-item').forEach(function (i) { i.classList.remove('active'); }); var activeItem = document.querySelector('[data-group="' + group + '"]'); if (activeItem) activeItem.classList.add('active'); var nameEl = document.querySelector('[data-group="' + group + '"] .group-name'); groupTitle.textContent = nameEl ? nameEl.textContent : group; chatMessages.innerHTML = ''; renderedIds.clear(); loadMessages(); }
-            sendBtn.addEventListener('click', sendMessage); messageInput.addEventListener('keypress', function (e) { if (e.key === 'Enter') sendMessage(); }); menuToggle.addEventListener('click', function () { sidebar.classList.toggle('open'); });
+
+            document.querySelectorAll('.chat-item').forEach(function (item) {
+                item.addEventListener('click', function () {
+                    switchGroup(item.dataset.group);
+                    if (window.innerWidth <= 768) sidebar.classList.remove('open');
+                });
+            });
+
+            function switchGroup(group) {
+                currentGroup = group;
+                document.querySelectorAll('.chat-item').forEach(function (i) { i.classList.remove('active'); });
+                var activeItem = document.querySelector('[data-group="' + group + '"]');
+                if (activeItem) activeItem.classList.add('active');
+                var nameEl = document.querySelector('[data-group="' + group + '"] .chat-name');
+                groupTitle.textContent = nameEl ? nameEl.textContent : 'گروه';
+                chatMessages.innerHTML = '';
+                renderedIds.clear();
+                loadMessages();
+            }
+
+            sendBtn.addEventListener('click', sendMessage);
+            messageInput.addEventListener('keypress', function (e) { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMessage(); } });
+            menuToggle.addEventListener('click', function () { sidebar.classList.toggle('open'); });
+
+            // جستجو
+            searchInput.addEventListener('input', function () {
+                var query = this.value.toLowerCase();
+                document.querySelectorAll('.chat-item').forEach(function (item) {
+                    var name = item.querySelector('.chat-name').textContent.toLowerCase();
+                    item.style.display = name.includes(query) ? 'flex' : 'none';
+                });
+            });
+
             async function updatePresence() { await supabase.from('online_users').upsert({ user_id: userId, username: username, avatar: avatar, group_name: currentGroup, last_seen: new Date().toISOString() }); }
             async function cleanupOnline() { var cutoff = new Date(Date.now() - 10000).toISOString(); await supabase.from('online_users').delete().lt('last_seen', cutoff); }
-            async function updateOnlineDisplay() { var result = await supabase.from('online_users').select('*'); var data = result.data, total = data ? data.length : 0; if (onlineCount) onlineCount.textContent = total + ' نفر آنلاین'; document.querySelectorAll('.group-item').forEach(function (item) { var g = item.dataset.group, count = data ? data.filter(function (u) { return u.group_name === g; }).length : 0; var el = item.querySelector('.group-count'); if (el) el.textContent = count + ' آنلاین'; }); }
-            loadMessages(); updatePresence(); updateOnlineDisplay(); setInterval(loadMessages, 2000); setInterval(updatePresence, 3000); setInterval(cleanupOnline, 10000); setInterval(updateOnlineDisplay, 3000); setInterval(updateTypingIndicator, 2000); window.addEventListener('beforeunload', async function () { await supabase.from('online_users').delete().eq('user_id', userId); await supabase.from('typing').delete().eq('user_id', userId); });
+            async function updateOnlineDisplay() {
+                var result = await supabase.from('online_users').select('*');
+                var data = result.data,
+                    total = data ? data.length : 0;
+                if (onlineCount) onlineCount.textContent = total + ' نفر آنلاین';
+                document.querySelectorAll('.chat-item').forEach(function (item) {
+                    var g = item.dataset.group,
+                        count = data ? data.filter(function (u) { return u.group_name === g; }).length : 0;
+                    var el = item.querySelector('.online-badge');
+                    if (el) el.textContent = count + ' آنلاین';
+                });
+            }
+
+            loadMessages();
+            updatePresence();
+            updateOnlineDisplay();
+            setInterval(loadMessages, 2000);
+            setInterval(updatePresence, 3000);
+            setInterval(cleanupOnline, 10000);
+            setInterval(updateOnlineDisplay, 3000);
+            setInterval(updateTypingIndicator, 1500);
+            window.addEventListener('beforeunload', async function () {
+                await supabase.from('online_users').delete().eq('user_id', userId);
+                await supabase.from('typing').delete().eq('user_id', userId);
+            });
         })();
     </script>
 </body>
